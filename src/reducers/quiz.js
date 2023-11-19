@@ -1,19 +1,41 @@
 import { createSlice } from "@reduxjs/toolkit";
+import '../index.css'; 
 
 // Change these to your own questions!
 const questions = [
   {
     id: 1,
-    questionText: "Who set the Olympic record for the 100m dash in 2012?",
-    options: ["Usain Bolt", "Justin Gatlin", "Tyson Gay", "Asafa Powell"],
-    correctAnswerIndex: 0
+    questionText: "What is the largest planet in our solar system?",
+    options: ["Saturn", "Jupiter", "Mars", "Earth"],
+    correctAnswerIndex: 1
   },
   {
     id: 2,
     questionText:
-      "When was Michael Phelps last named male World Swimmer of the Year?",
-    options: ["2012", "2014", "2016", "2018"],
+      "Which planet in our solar system has massive rings that are easily visible with a small telescope?",
+    options: ["Neptune", "Mercury", "Saturn", "Uranus"],
     correctAnswerIndex: 2
+  },
+  {
+    id: 3,
+    questionText:
+      "Mars is often called “The Red Planet”, but why does it look so red to begin with?",
+    options: ["Mars is covered by a thick blanket of clouds that only reflect back red light", "The surface has a lot of iron which turns orange-red when it rusts", "The surface is icredibly hot, causing it to glow", "The Martian atmosphere has a lot of red dust particles"],
+    correctAnswerIndex: 1
+  },
+  {
+    id: 4,
+    questionText:
+      "Did you know that there is a planet that spins on its side? Which planet is it?",
+    options: ["Venus", "Jupiter", "Mars", "Uranus"],
+    correctAnswerIndex: 3
+  },
+  {
+    id: 5,
+    questionText:
+      "During the day this planet gets hot enough to melt lead, but at night the temperature drops to -290°F?",
+    options: ["Mercury", "Mars", "Saturn", "Neptune"],
+    correctAnswerIndex: 0
   }
 ];
 
@@ -21,7 +43,8 @@ const initialState = {
   questions,
   answers: [],
   currentQuestionIndex: 0,
-  quizOver: false
+  quizOver: false,
+  quizCompleted: false,
 };
 
 export const quiz = createSlice({
@@ -58,7 +81,6 @@ export const quiz = createSlice({
           `You passed answerIndex ${answerIndex}, but it is not in the possible answers array!`
         );
       }
-
       state.answers.push({
         questionId,
         answerIndex,
@@ -66,6 +88,15 @@ export const quiz = createSlice({
         answer: question.options[answerIndex],
         isCorrect: question.correctAnswerIndex === answerIndex
       });
+    },
+
+    goToNextQuestion: (state) => {
+      if (state.currentQuestionIndex + 1 === state.questions.length) {
+        state.quizOver = true;
+        state.quizCompleted = true;
+      } else {
+        state.currentQuestionIndex += 1;
+      }
     },
 
     /**
