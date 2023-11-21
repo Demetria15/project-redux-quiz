@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { quiz } from '../reducers/quiz';
+import { Link, useNavigate } from 'react-router-dom'; 
 import '../index.css';
 
 export const CurrentQuestion = () => {
@@ -10,6 +11,7 @@ export const CurrentQuestion = () => {
   const selectedAnswer = useSelector((state) => state.quiz.answers[currentQuestionIndex]?.answerIndex);
   const dispatch = useDispatch();
   const [userClicked, setUserClicked] = useState(false);
+  const navigate = useNavigate();
 
   const handleAnswerSelection = (answerIndex) => {
     if (!userClicked) {
@@ -22,6 +24,11 @@ export const CurrentQuestion = () => {
     if (userClicked) {
       dispatch(quiz.actions.goToNextQuestion());
       setUserClicked(false);
+
+      // Check if it's the last question and navigate to summary page
+      if (currentQuestionIndex === totalQuestions - 1) {
+        navigate('/summary');
+      }
     }
   };
 
@@ -50,6 +57,12 @@ export const CurrentQuestion = () => {
         <button onClick={handleNextQuestion} disabled={!userClicked}>
           Next
         </button>
+      )}
+
+      {currentQuestionIndex === totalQuestions - 1 && (
+        <Link to="/summary">
+          <button>See Summary</button>
+        </Link>
       )}
     </div>
   );

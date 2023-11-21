@@ -90,15 +90,6 @@ export const quiz = createSlice({
       });
     },
 
-    goToNextQuestion: (state) => {
-      if (state.currentQuestionIndex + 1 === state.questions.length) {
-        state.quizOver = true;
-        state.quizCompleted = true;
-      } else {
-        state.currentQuestionIndex += 1;
-      }
-    },
-
     /**
      * Use this action to progress the quiz to the next question. If there's
      * no more questions (the user was on the final question), set `quizOver`

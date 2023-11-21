@@ -1,31 +1,34 @@
-// QuizControls.jsx
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';  
 import { quiz } from '../reducers/quiz';
 
 const QuizControls = () => {
+  const quizOver = useSelector((state) => state.quiz.quizOver);
   const dispatch = useDispatch();
-  const currentQuestionIndex = useSelector((state) => state.quiz.currentQuestionIndex);
-  const totalQuestions = useSelector((state) => state.quiz.questions.length);
+  const navigate = useNavigate();  
 
-  const handleAnswerSelection = (answerIndex) => {
-    dispatch(quiz.actions.submitAnswer({ questionId: currentQuestionIndex, answerIndex }));
+  const handleRestart = () => {
+    dispatch(quiz.actions.restart());
+    navigate('/');
   };
 
-  const handleNextQuestion = () => {
-    dispatch(quiz.actions.goToNextQuestion());
+  const handleSummary = () => {
+    navigate('/summary');
   };
 
   return (
     <div>
-      {currentQuestionIndex < totalQuestions - 1 ? (
-        <>
-        </>
-      ) : (
-        <p>No more questions. Check your answers below.</p>
+      {quizOver && (
+        <div>
+          <button onClick={handleRestart}>Restart Quiz</button>
+          <button onClick={handleSummary}>Quiz Summary</button>
+        </div>
       )}
     </div>
   );
 };
 
 export default QuizControls;
+
+
